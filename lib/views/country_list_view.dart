@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_virtual_number/modal/country_list.dart';
+import 'package:my_virtual_number/screens/icon_content.dart';
+import 'package:my_virtual_number/screens/reusable_card.dart';
+import 'package:my_virtual_number/service/api_services.dart';
 import 'package:my_virtual_number/views/number_list_view.dart';
 
 class CountryListView extends StatefulWidget {
@@ -8,9 +10,11 @@ class CountryListView extends StatefulWidget {
 }
 
 class _CountryListViewState extends State<CountryListView> {
+  ApiServices apiService = ApiServices();
   @override
   void initState() {
     super.initState();
+    //apiService.getAllCountries();
   }
 
   @override
@@ -19,18 +23,119 @@ class _CountryListViewState extends State<CountryListView> {
       appBar: AppBar(
         title: Text('Country List'),
       ),
-      body: Container(
-        padding: EdgeInsets.only(top: 10.0),
-        child: ListView.builder(
-          itemCount: countryList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return listViewItem(
-                countryList[index].countryText, countryList[index].country);
-          },
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: ReusableCard(
+                    cardChild: IconContent(
+                      icon: Icons.ac_unit,
+                      text: 'USA',
+                    ),
+                    screen: 'COUNTRY_SCREEN',
+                  ),
+                ),
+                Expanded(
+                  child: ReusableCard(
+                    cardChild: IconContent(
+                      icon: Icons.ac_unit,
+                      text: 'UK',
+                    ),
+                    screen: 'COUNTRY_SCREEN',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: ReusableCard(
+                    cardChild: IconContent(
+                      icon: Icons.ac_unit,
+                      text: 'Indonesia',
+                    ),
+                    screen: 'COUNTRY_SCREEN',
+                  ),
+                ),
+                Expanded(
+                  child: ReusableCard(
+                    cardChild: IconContent(
+                      icon: Icons.ac_unit,
+                      text: 'Germany',
+                    ),
+                    screen: 'COUNTRY_SCREEN',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: ReusableCard(
+                    cardChild: IconContent(
+                      icon: Icons.mail_outline,
+                      text: 'Philippines',
+                    ),
+                    screen: 'COUNTRY_SCREEN',
+                  ),
+                ),
+                Expanded(
+                  child: ReusableCard(
+                    cardChild: IconContent(
+                      icon: Icons.accessible_forward_outlined,
+                      text: 'Malayasia',
+                    ),
+                    screen: 'COUNTRY_SCREEN',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: ReusableCard(
+                    cardChild: IconContent(
+                      icon: Icons.accessibility_new_outlined,
+                      text: 'France',
+                    ),
+                    screen: 'COUNTRY_SCREEN',
+                  ),
+                ),
+                Expanded(
+                  child: ReusableCard(
+                    cardChild: IconContent(
+                      icon: Icons.ac_unit,
+                      text: 'Canada',
+                    ),
+                    screen: 'COUNTRY_SCREEN',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
+
+// children: [
+
+//                 ReusableCard(
+//                   cardChild: IconContent(
+//                     icon: Icons.ac_unit,
+//                     text: 'AAAAA',
+//                   ),
+//                 ),
+//               ],
 
   Widget listViewItem(String countryName, int countryId) {
     return Container(
