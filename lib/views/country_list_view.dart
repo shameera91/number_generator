@@ -14,7 +14,6 @@ class _CountryListViewState extends State<CountryListView> {
   @override
   void initState() {
     super.initState();
-    //apiService.getAllCountries();
   }
 
   @override
@@ -32,19 +31,21 @@ class _CountryListViewState extends State<CountryListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.ac_unit,
+                      iconPath: 'assets/usa.png',
                       text: 'USA',
                     ),
                     screen: 'COUNTRY_SCREEN',
+                    countryId: '12',
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.ac_unit,
-                      text: 'UK',
+                      iconPath: 'assets/england.jpg',
+                      text: 'England',
                     ),
                     screen: 'COUNTRY_SCREEN',
+                    countryId: '16',
                   ),
                 ),
               ],
@@ -56,19 +57,21 @@ class _CountryListViewState extends State<CountryListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.ac_unit,
+                      iconPath: 'assets/indonesia.png',
                       text: 'Indonesia',
                     ),
                     screen: 'COUNTRY_SCREEN',
+                    countryId: '6',
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.ac_unit,
+                      iconPath: 'assets/germany.png',
                       text: 'Germany',
                     ),
                     screen: 'COUNTRY_SCREEN',
+                    countryId: '43',
                   ),
                 ),
               ],
@@ -80,19 +83,21 @@ class _CountryListViewState extends State<CountryListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.mail_outline,
+                      iconPath: 'assets/philippines.png',
                       text: 'Philippines',
                     ),
                     screen: 'COUNTRY_SCREEN',
+                    countryId: '4',
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.accessible_forward_outlined,
-                      text: 'Malayasia',
+                      iconPath: 'assets/malaysia.png',
+                      text: 'Malaysia',
                     ),
                     screen: 'COUNTRY_SCREEN',
+                    countryId: '7',
                   ),
                 ),
               ],
@@ -104,19 +109,21 @@ class _CountryListViewState extends State<CountryListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.accessibility_new_outlined,
+                      iconPath: 'assets/france.png',
                       text: 'France',
                     ),
                     screen: 'COUNTRY_SCREEN',
+                    countryId: '78',
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.ac_unit,
+                      iconPath: 'assets/canada.png',
                       text: 'Canada',
                     ),
                     screen: 'COUNTRY_SCREEN',
+                    countryId: '36',
                   ),
                 ),
               ],
@@ -126,16 +133,6 @@ class _CountryListViewState extends State<CountryListView> {
       ),
     );
   }
-
-// children: [
-
-//                 ReusableCard(
-//                   cardChild: IconContent(
-//                     icon: Icons.ac_unit,
-//                     text: 'AAAAA',
-//                   ),
-//                 ),
-//               ],
 
   Widget listViewItem(String countryName, int countryId) {
     return Container(

@@ -3,6 +3,8 @@ import 'package:my_virtual_number/screens/icon_content.dart';
 import 'package:my_virtual_number/screens/reusable_card.dart';
 
 class ServicesListView extends StatefulWidget {
+  ServicesListView({this.countryId});
+  final String countryId;
   @override
   _ServicesListViewState createState() => _ServicesListViewState();
 }
@@ -23,19 +25,23 @@ class _ServicesListViewState extends State<ServicesListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.access_alarm_outlined,
+                      iconPath: 'assets/telegram.png',
                       text: 'Telegram',
                     ),
                     screen: 'SERVICES_SCREEN',
+                    countryId: widget.countryId,
+                    serviceCode: 'tg',
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.access_alarm_outlined,
+                      iconPath: 'assets/facebook.png',
                       text: 'Facebook',
                     ),
                     screen: 'SERVICES_SCREEN',
+                    countryId: widget.countryId,
+                    serviceCode: 'fb',
                   ),
                 ),
               ],
@@ -47,19 +53,23 @@ class _ServicesListViewState extends State<ServicesListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.access_alarm_outlined,
+                      iconPath: 'assets/paypal.png',
                       text: 'Paypal',
                     ),
                     screen: 'SERVICES_SCREEN',
+                    countryId: widget.countryId,
+                    serviceCode: 'ts',
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.access_alarm_outlined,
+                      iconPath: 'assets/instagram.png',
                       text: 'Instagram',
                     ),
                     screen: 'SERVICES_SCREEN',
+                    countryId: widget.countryId,
+                    serviceCode: 'ig',
                   ),
                 ),
               ],
@@ -71,19 +81,23 @@ class _ServicesListViewState extends State<ServicesListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.access_alarm_outlined,
+                      iconPath: 'assets/tinder.png',
                       text: 'Tinder',
                     ),
                     screen: 'SERVICES_SCREEN',
+                    countryId: widget.countryId,
+                    serviceCode: 'oi',
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.design_services_outlined,
+                      iconPath: 'assets/netflix.png',
                       text: 'Netflix',
                     ),
                     screen: 'SERVICES_SCREEN',
+                    countryId: widget.countryId,
+                    serviceCode: 'nf',
                   ),
                 ),
               ],
@@ -95,19 +109,23 @@ class _ServicesListViewState extends State<ServicesListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.accessibility_new_outlined,
+                      iconPath: 'assets/discord.png',
                       text: 'Discord',
                     ),
                     screen: 'SERVICES_SCREEN',
+                    countryId: widget.countryId,
+                    serviceCode: 'ds',
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      icon: Icons.ac_unit,
+                      iconPath: 'assets/ebay.png',
                       text: 'Ebay',
                     ),
                     screen: 'SERVICES_SCREEN',
+                    countryId: widget.countryId,
+                    serviceCode: 'dh',
                   ),
                 ),
               ],

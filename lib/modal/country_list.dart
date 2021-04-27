@@ -1,5 +1,8 @@
 import 'package:my_virtual_number/modal/country_modal.dart';
 
+/*
+*currently this list is not using 
+**/
 List<CountryModal> countryList = [
   CountryModal(1, 'USA'),
   CountryModal(7, 'Russia'),
