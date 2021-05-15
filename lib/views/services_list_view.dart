@@ -81,23 +81,23 @@ class _ServicesListViewState extends State<ServicesListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      iconPath: 'assets/tinder.png',
-                      text: 'Tinder',
+                      iconPath: 'assets/watsapp.png',
+                      text: 'Whatsapp',
                     ),
                     screen: 'SERVICES_SCREEN',
                     countryId: widget.countryId,
-                    serviceCode: 'oi',
+                    serviceCode: 'wa',
                   ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      iconPath: 'assets/netflix.png',
-                      text: 'Netflix',
+                      iconPath: 'assets/viber.png',
+                      text: 'Viber',
                     ),
                     screen: 'SERVICES_SCREEN',
                     countryId: widget.countryId,
-                    serviceCode: 'nf',
+                    serviceCode: 'vi',
                   ),
                 ),
               ],
@@ -120,12 +120,12 @@ class _ServicesListViewState extends State<ServicesListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      iconPath: 'assets/ebay.png',
-                      text: 'Ebay',
+                      iconPath: 'assets/gmail.png',
+                      text: 'Gmail',
                     ),
                     screen: 'SERVICES_SCREEN',
                     countryId: widget.countryId,
-                    serviceCode: 'dh',
+                    serviceCode: 'go',
                   ),
                 ),
               ],

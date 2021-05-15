@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_virtual_number/screens/icon_content.dart';
 import 'package:my_virtual_number/screens/reusable_card.dart';
 import 'package:my_virtual_number/service/api_services.dart';
+import 'package:my_virtual_number/service/file_handling_service.dart';
 import 'package:my_virtual_number/views/number_list_view.dart';
 
 class CountryListView extends StatefulWidget {
@@ -11,9 +12,11 @@ class CountryListView extends StatefulWidget {
 
 class _CountryListViewState extends State<CountryListView> {
   ApiServices apiService = ApiServices();
+  FileHandlingService fileHandlingService = FileHandlingService();
   @override
   void initState() {
     super.initState();
+    fileHandlingService.readFile();
   }
 
   @override
