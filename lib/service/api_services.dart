@@ -35,17 +35,24 @@ class ApiServices {
     };
     var orderNumberUrl =
         Uri.https('sms-activate.ru', '/stubs/handler_api.php', _params);
-
-    var response = await get(orderNumberUrl);
-    if (response.statusCode == 200) {
-      print(response.body);
-
-      var resulString = response.body;
-      List<String> splittedRespose = resulString.split(':');
-      NumberResponse numberResponse =
-          NumberResponse(id: splittedRespose[1], number: splittedRespose[2]);
-      return numberResponse;
-    } else {
+    try {
+      var response = await get(orderNumberUrl);
+      if (response.statusCode == 200) {
+        print('Get number response ' + response.body);
+        var resulString = response.body;
+        if (resulString == 'NO_NUMBERS' || resulString == 'NO_BALANCE') {
+          return null;
+        } else {
+          List<String> splittedRespose = resulString.split(':');
+          NumberResponse numberResponse = NumberResponse(
+              id: splittedRespose[1], number: splittedRespose[2]);
+          return numberResponse;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error message from get number' + e);
       return null;
     }
   }
@@ -53,7 +60,7 @@ class ApiServices {
   Future<String> getSms(String activationId) async {
     var _params = {
       'api_key': apiKey,
-      'action': 'getStatus',
+      'action': 'getFullSms',
       'id': activationId,
     };
     var getSmsUrl =
@@ -70,7 +77,7 @@ class ApiServices {
       } else {
         List<String> resultStringList = smsResponse.split(":");
         String status = resultStringList[0];
-        if (status == 'STATUS_OK') {
+        if (status == 'FULL_SMS') {
           if (resultStringList[1].isNotEmpty) {
             return resultStringList[1];
           } else {
@@ -82,5 +89,35 @@ class ApiServices {
       }
     }
     return "No SMS Received";
+  }
+
+  // status = 3 - Request another sms
+  // status = 6 - Confirm SMS code and complete activation
+  Future<String> changeStatus(int status, String activationId) async {
+    var _params = {
+      'api_key': apiKey,
+      'action': 'setStatus',
+      'status': status,
+      'id': activationId
+    };
+    var changeStatusUrl =
+        Uri.https('sms-activate.ru', '/stubs/handler_api.php', _params);
+    try {
+      var response = await get(changeStatusUrl);
+      if (response.statusCode == 200) {
+        print('Change Number Status Response ' + response.body);
+        var resulString = response.body;
+        if (resulString == 'ACCESS_ACTIVATION') {
+          return "ACCESS_ACTIVATION";
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error message change status' + e);
+      return null;
+    }
   }
 }

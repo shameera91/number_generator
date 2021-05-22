@@ -32,6 +32,7 @@ class Constants {
     "dh": "Ebay",
     "wa": "Whatsapp",
     "vi": "Viber",
-    "go": "Gmail"
+    "go": "Gmail",
+    "tw": "Twitter"
   };
 }

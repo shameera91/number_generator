@@ -16,10 +16,8 @@ class FileHandlingService {
       String text = await file.readAsString();
       print('text file availbe text  ---------' + text);
       Constants.userPoints = int.parse(text);
-      //return int.parse(text);
     } catch (e) {
       print('Couldn\'t read file');
-      //return Constants.userPoints;
     }
   }
 }

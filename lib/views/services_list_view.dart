@@ -53,12 +53,12 @@ class _ServicesListViewState extends State<ServicesListView> {
                 Expanded(
                   child: ReusableCard(
                     cardChild: IconContent(
-                      iconPath: 'assets/paypal.png',
-                      text: 'Paypal',
+                      iconPath: 'assets/twittr.jpg',
+                      text: 'Twitter',
                     ),
                     screen: 'SERVICES_SCREEN',
                     countryId: widget.countryId,
-                    serviceCode: 'ts',
+                    serviceCode: 'tw',
                   ),
                 ),
                 Expanded(

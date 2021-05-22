@@ -11,7 +11,7 @@ class AdMobService {
   static AdListener _listener = AdListener(
     onAdLoaded: (Ad ad) => print('Ad Loaded'),
     onAdFailedToLoad: (Ad ad, LoadAdError error) {
-      print('ERRor AD loading');
+      print('Error AD loading');
       ad.dispose();
     },
     onAdOpened: (Ad ad) => {
@@ -20,43 +20,24 @@ class AdMobService {
     },
     onAdClosed: (Ad ad) => print('Ad Closed'),
   );
-  //test banner ad
+  //test banner ad - ca-app-pub-3940256099942544/6300978111
   static BannerAd createBannerAd() {
     final BannerAd ad = BannerAd(
       size: AdSize.smartBanner,
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+      adUnitId: 'ca-app-pub-3246132399617809/1200353023',
       request: AdRequest(),
       listener: _listener,
     );
     return ad;
   }
 
+  //test interstitialAd ca-app-pub-3940256099942544/8691691433
   static InterstitialAd createInterstitialAd() {
     final InterstitialAd ad = InterstitialAd(
-      adUnitId:
-          'ca-app-pub-3940256099942544/8691691433', // ca-app-pub-3940256099942544/8691691433
+      adUnitId: 'ca-app-pub-3246132399617809/7553529456',
       listener: _listener,
       request: AdRequest(),
     );
     return ad;
   }
-
-  // static BannerAd createBannerAd() {
-  //   final BannerAd ad = BannerAd(
-  //     size: AdSize.smartBanner,
-  //     adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-  //     request: AdRequest(),
-  //     listener: AdListener(
-  //       onAdLoaded: (Ad ad) => print('Ad Loaded'),
-  //       onAdFailedToLoad: (Ad ad, LoadAdError error) {
-  //         print('ERRor AD loading');
-  //         ad.dispose();
-  //       },
-  //       onAdOpened: (Ad ad) => print('Ad Opened'),
-  //       onAdClosed: (Ad ad) => print('Ad Closed'),
-  //     ),
-  //   );
-  //   return ad;
-  // }
-
 }

@@ -2,7 +2,7 @@
     package="com.unfold.droid.my_virtual_number">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="my_virtual_number"
+        android:label="My Virtual Number"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -38,9 +38,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-            <!-- test app id -->
+            <!-- test app id   ca-app-pub-3940256099942544~3347511713 -->
             <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>  
+            android:value="ca-app-pub-3246132399617809~4539804568"/>  
     </application>
 </manifest>

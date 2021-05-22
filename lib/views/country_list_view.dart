@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_virtual_number/screens/icon_content.dart';
 import 'package:my_virtual_number/screens/reusable_card.dart';
+import 'package:my_virtual_number/service/admob_service.dart';
 import 'package:my_virtual_number/service/api_services.dart';
 import 'package:my_virtual_number/service/file_handling_service.dart';
 import 'package:my_virtual_number/views/number_list_view.dart';
@@ -12,7 +14,9 @@ class CountryListView extends StatefulWidget {
 
 class _CountryListViewState extends State<CountryListView> {
   ApiServices apiService = ApiServices();
+  BannerAd _bannerAd;
   FileHandlingService fileHandlingService = FileHandlingService();
+
   @override
   void initState() {
     super.initState();
@@ -20,7 +24,15 @@ class _CountryListViewState extends State<CountryListView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _bannerAd?.dispose();
+    _bannerAd = null;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _bannerAd = AdMobService.createBannerAd()..load();
     return Scaffold(
       appBar: AppBar(
         title: Text('Country List'),
@@ -134,6 +146,13 @@ class _CountryListViewState extends State<CountryListView> {
           ),
         ],
       ),
+      bottomNavigationBar: Container(
+        height: 50.0,
+        child: AdWidget(
+          key: UniqueKey(),
+          ad: _bannerAd,
+        ),
+      ),
     );
   }
 
@@ -161,21 +180,3 @@ class _CountryListViewState extends State<CountryListView> {
     );
   }
 }
-
-// FutureBuilder(
-//           future: numberService.getFreeCountryList(),
-//           builder: (BuildContext context, AsyncSnapshot snapshot) {
-//             if (snapshot.hasData) {
-//               return ListView.builder(
-//                 itemCount: countryList.length,
-//                 itemBuilder: (BuildContext context, int index) {
-//                   return listViewItem(snapshot.data[index].countryText);
-//                 },
-//               );
-//             } else {
-//               return Center(
-//                 child: CircularProgressIndicator(),
-//               );
-//             }
-//           },
-//         ),
