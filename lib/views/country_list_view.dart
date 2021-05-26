@@ -1,3 +1,4 @@
+import 'package:appodeal_flutter/appodeal_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_virtual_number/screens/icon_content.dart';
@@ -16,11 +17,42 @@ class _CountryListViewState extends State<CountryListView> {
   ApiServices apiService = ApiServices();
   BannerAd _bannerAd;
   FileHandlingService fileHandlingService = FileHandlingService();
+  bool isAppodealInitialized = false;
 
   @override
   void initState() {
     super.initState();
     fileHandlingService.readFile();
+    Appodeal.setAppKeys(
+        androidAppKey: 'fed7fd969ad89e1f20ffb972e88dd3476352df86f25f2711');
+
+    Appodeal.setBannerCallback(
+        (event) => print('------- Banner ad triggered the event $event'));
+    Appodeal.setInterstitialCallback(
+        (event) => print('Interstitial ad triggered the event $event'));
+    Appodeal.setRewardCallback(
+        (event) => print('Reward ad triggered the event $event'));
+    Appodeal.setNonSkippableCallback(
+        (event) => print('Non-skippable ad triggered the event $event'));
+
+    // Request authorization to track the user
+    Appodeal.requestIOSTrackingAuthorization().then((_) async {
+      // Set interstitial ads to be cached manually
+      await Appodeal.setAutoCache(AdType.INTERSTITIAL, false);
+
+      // Initialize Appodeal after the authorization was granted or not
+      await Appodeal.initialize(
+          hasConsent: true,
+          adTypes: [
+            AdType.BANNER,
+            AdType.INTERSTITIAL,
+            AdType.REWARD,
+            AdType.NON_SKIPPABLE
+          ],
+          testMode: true);
+
+      setState(() => this.isAppodealInitialized = true);
+    });
   }
 
   @override
@@ -32,7 +64,7 @@ class _CountryListViewState extends State<CountryListView> {
 
   @override
   Widget build(BuildContext context) {
-    _bannerAd = AdMobService.createBannerAd()..load();
+    //_bannerAd = AdMobService.createBannerAd()..load();
     return Scaffold(
       appBar: AppBar(
         title: Text('Country List'),
@@ -144,15 +176,22 @@ class _CountryListViewState extends State<CountryListView> {
               ],
             ),
           ),
+          ElevatedButton(
+            child: Text('Show Banner Ad'),
+            onPressed: () async {
+              await Appodeal.show(AdType.BANNER,
+                  placementName: "placement-name");
+            },
+          ),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: 50.0,
-        child: AdWidget(
-          key: UniqueKey(),
-          ad: _bannerAd,
-        ),
-      ),
+      // bottomNavigationBar: Container(
+      //   height: 50.0,
+      //   child: AdWidget(
+      //     key: UniqueKey(),
+      //     ad: _bannerAd,
+      //   ),
+      // ),
     );
   }
 

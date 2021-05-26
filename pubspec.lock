@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.22"
+  appodeal_flutter:
+    dependency: "direct main"
+    description:
+      name: appodeal_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
   async:
     dependency: transitive
     description:
