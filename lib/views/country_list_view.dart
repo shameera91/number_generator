@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_virtual_number/screens/icon_content.dart';
 import 'package:my_virtual_number/screens/reusable_card.dart';
-import 'package:my_virtual_number/service/admob_service.dart';
 import 'package:my_virtual_number/service/api_services.dart';
 import 'package:my_virtual_number/service/file_handling_service.dart';
 import 'package:my_virtual_number/views/number_list_view.dart';
@@ -14,7 +13,8 @@ class CountryListView extends StatefulWidget {
 
 class _CountryListViewState extends State<CountryListView> {
   ApiServices apiService = ApiServices();
-  BannerAd _bannerAd;
+  BannerAd _anchoredBanner;
+  bool _loadingAnchoredBanner = false;
   FileHandlingService fileHandlingService = FileHandlingService();
 
   @override
@@ -23,16 +23,54 @@ class _CountryListViewState extends State<CountryListView> {
     fileHandlingService.readFile();
   }
 
+  Future<void> _createdAnchoredBanner(BuildContext context) async {
+    final AnchoredAdaptiveBannerAdSize size =
+        await AdSize.getAnchoredAdaptiveBannerAdSize(
+      Orientation.portrait,
+      MediaQuery.of(context).size.width.truncate(),
+    );
+
+    if (size == null) {
+      print('Unable to get height of anchored banner.');
+      return;
+    }
+
+    final BannerAd banner = BannerAd(
+      size: size,
+      adUnitId: 'ca-app-pub-3246132399617809/1200353023',
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          print('$BannerAd loaded.');
+          setState(() {
+            _anchoredBanner = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          print('$BannerAd failedToLoad: $error');
+          ad.dispose();
+        },
+        onAdOpened: (Ad ad) => print('$BannerAd onAdOpened.'),
+        onAdClosed: (Ad ad) => print('$BannerAd onAdClosed.'),
+      ),
+    );
+    return banner.load();
+  }
+
   @override
   void dispose() {
     super.dispose();
-    _bannerAd?.dispose();
-    _bannerAd = null;
+    //_bannerAd?.dispose();
+    //_bannerAd = null;
   }
 
   @override
   Widget build(BuildContext context) {
-    _bannerAd = AdMobService.createBannerAd()..load();
+    //_bannerAd = AdMobService.createBannerAd()..load();
+    if (!_loadingAnchoredBanner) {
+      _loadingAnchoredBanner = true;
+      _createdAnchoredBanner(context);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Country List'),
@@ -146,13 +184,15 @@ class _CountryListViewState extends State<CountryListView> {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: 50.0,
-        child: AdWidget(
-          key: UniqueKey(),
-          ad: _bannerAd,
-        ),
-      ),
+      bottomNavigationBar: (_anchoredBanner != null)
+          ? Container(
+              width: _anchoredBanner.size.width.toDouble(),
+              height: _anchoredBanner.size.height.toDouble(),
+              child: AdWidget(
+                ad: _anchoredBanner,
+              ),
+            )
+          : Container(),
     );
   }
 

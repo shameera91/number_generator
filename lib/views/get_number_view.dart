@@ -4,9 +4,10 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:my_virtual_number/constants.dart';
 import 'package:my_virtual_number/modal/number_response_dto.dart';
-import 'package:my_virtual_number/service/admob_service.dart';
 import 'package:my_virtual_number/service/api_services.dart';
 import 'package:my_virtual_number/service/file_handling_service.dart';
+
+const int maxFailedLoadAttempts = 3;
 
 class GetNumberView extends StatefulWidget {
   GetNumberView({this.countryId, this.serviceCode});
@@ -24,36 +25,68 @@ class _GetNumberViewState extends State<GetNumberView> {
   bool getNumberButtonPressed = false;
   bool smsReceived = false;
   bool showSpinner = false;
-  InterstitialAd _interstitialAd;
+
+  RewardedAd _rewardedAd;
+  int _numRewardLoadAttempts = 0;
 
   @override
   void initState() {
     super.initState();
+    _createRewardAd();
+  }
+
+  void _createRewardAd() {
+    RewardedAd.load(
+        adUnitId: 'ca-app-pub-3246132399617809/2453541167',
+        request: AdRequest(nonPersonalizedAds: true),
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
+          onAdLoaded: (RewardedAd ad) {
+            print('$ad loaded');
+            _rewardedAd = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('RewardedAd failed to load: $error');
+            _rewardedAd = null;
+            _numRewardLoadAttempts += 1;
+            if (_numRewardLoadAttempts <= maxFailedLoadAttempts) {
+              _createRewardAd();
+            }
+          },
+        ));
+  }
+
+  void _showRewardAd() {
+    if (_rewardedAd == null) {
+      print('Warning: attempt to show rewarded before loaded.');
+      return;
+    }
+    _rewardedAd.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (RewardedAd ad) {
+        print('ad onAdShowedFullScreenContent.');
+      },
+      onAdDismissedFullScreenContent: (RewardedAd ad) {
+        print('$ad onAdDismissedFullScreenContent.');
+        ad.dispose();
+        _createRewardAd();
+      },
+      onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
+        print('$ad onAdFailedToShowFullScreenContent: $error');
+        ad.dispose();
+        _createRewardAd();
+      },
+    );
+    _rewardedAd.show(onUserEarnedReward: (RewardedAd ad, RewardItem reward) {
+      print('$ad with reward $RewardItem(${reward.amount}, ${reward.type}');
+      setState(() {
+        Constants.userPoints = (Constants.userPoints + reward.amount);
+      });
+    });
+    _rewardedAd = null;
   }
 
   void updateUserCredits() {
     Constants.userPoints = Constants.userPoints - 7;
   }
-
-  // void writeToFile(int userScore) async {
-  //   final Directory directory = await getApplicationDocumentsDirectory();
-  //   final File file = File('${directory.path}/test_file.txt');
-  //   await file.writeAsString('$userScore');
-  // }
-
-  // Future<int> readFile() async {
-  //   try {
-  //     final Directory directory = await getApplicationDocumentsDirectory();
-  //     final File file = File('${directory.path}/test_file.txt');
-  //     String text = await file.readAsString();
-  //     print('text file availbe text  ---------' + text);
-  //     Constants.userPoints = int.parse(text);
-  //     return int.parse(text);
-  //   } catch (e) {
-  //     print('Couldn\'t read file');
-  //     return Constants.userPoints;
-  //   }
-  // }
 
   bool checkUserPointEligibility() {
     if (Constants.userPoints >= 10) {
@@ -64,9 +97,13 @@ class _GetNumberViewState extends State<GetNumberView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _interstitialAd = AdMobService.createInterstitialAd()..load();
+  void dispose() {
+    super.dispose();
+    _rewardedAd.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     String viewAdInfoMessage =
         'You need atleast 10 points to order another number.View few ads to earn points';
     String confirmMsgString = 'Get ' +
@@ -242,7 +279,7 @@ class _GetNumberViewState extends State<GetNumberView> {
                             });
                             print('Complted the activation');
                             String resultMsg = await apiServices.changeStatus(
-                                6, numberResponse.id);
+                                '6', numberResponse.id);
                             setState(() {
                               showSpinner = false;
                             });
@@ -270,10 +307,12 @@ class _GetNumberViewState extends State<GetNumberView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SelectableText(
-                    smsText != null ? smsText : '',
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  Expanded(
+                    child: SelectableText(
+                      smsText != null ? smsText : '',
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
@@ -308,12 +347,12 @@ class _GetNumberViewState extends State<GetNumberView> {
                                 horizontal: 15.0, vertical: 13.0),
                           ),
                           onPressed: () {
-                            _interstitialAd.show();
-                            setState(() {
-                              //Constants.userPoints = Constants.userPoints + 2;
-                              fileHandlingService
-                                  .writeToFile(Constants.userPoints);
-                            });
+                            _showRewardAd();
+                            fileHandlingService
+                                .writeToFile(Constants.userPoints);
+                            // setState(() {
+
+                            // });
                           },
                           child: Text(
                             'Show Ad',

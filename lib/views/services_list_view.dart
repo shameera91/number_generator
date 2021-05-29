@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_virtual_number/screens/icon_content.dart';
 import 'package:my_virtual_number/screens/reusable_card.dart';
 
@@ -10,8 +11,54 @@ class ServicesListView extends StatefulWidget {
 }
 
 class _ServicesListViewState extends State<ServicesListView> {
+  BannerAd _anchoredBanner;
+  bool _loadingAnchoredBanner = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> _createdAnchoredBanner(BuildContext context) async {
+    final AnchoredAdaptiveBannerAdSize size =
+        await AdSize.getAnchoredAdaptiveBannerAdSize(
+      Orientation.portrait,
+      MediaQuery.of(context).size.width.truncate(),
+    );
+
+    if (size == null) {
+      print('Unable to get height of anchored banner.');
+      return;
+    }
+
+    final BannerAd banner = BannerAd(
+      size: size,
+      adUnitId: 'ca-app-pub-3246132399617809/1200353023',
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          print('$BannerAd loaded.');
+          setState(() {
+            _anchoredBanner = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          print('$BannerAd failedToLoad: $error');
+          ad.dispose();
+        },
+        onAdOpened: (Ad ad) => print('$BannerAd onAdOpened.'),
+        onAdClosed: (Ad ad) => print('$BannerAd onAdClosed.'),
+      ),
+    );
+    return banner.load();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!_loadingAnchoredBanner) {
+      _loadingAnchoredBanner = true;
+      _createdAnchoredBanner(context);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Services List'),
@@ -133,6 +180,15 @@ class _ServicesListViewState extends State<ServicesListView> {
           ),
         ],
       ),
+      bottomNavigationBar: (_anchoredBanner != null)
+          ? Container(
+              width: _anchoredBanner.size.width.toDouble(),
+              height: _anchoredBanner.size.height.toDouble(),
+              child: AdWidget(
+                ad: _anchoredBanner,
+              ),
+            )
+          : Container(),
     );
   }
 }

@@ -93,7 +93,7 @@ class ApiServices {
 
   // status = 3 - Request another sms
   // status = 6 - Confirm SMS code and complete activation
-  Future<String> changeStatus(int status, String activationId) async {
+  Future<String> changeStatus(String status, String activationId) async {
     var _params = {
       'api_key': apiKey,
       'action': 'setStatus',
