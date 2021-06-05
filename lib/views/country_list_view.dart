@@ -1,8 +1,10 @@
-import 'package:facebook_audience_network/facebook_audience_network.dart';
+// import 'package:facebook_audience_network/facebook_audience_network.dart';
+import 'package:appodeal_flutter/appodeal_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:my_virtual_number/screens/icon_content.dart';
 import 'package:my_virtual_number/screens/reusable_card.dart';
-import 'package:my_virtual_number/service/fan_service.dart';
+import 'package:my_virtual_number/service/appodeal_service.dart';
+// import 'package:my_virtual_number/service/fan_service.dart';
 import 'package:my_virtual_number/service/file_handling_service.dart';
 import 'package:my_virtual_number/views/number_list_view.dart';
 
@@ -13,31 +15,34 @@ class CountryListView extends StatefulWidget {
 
 class _CountryListViewState extends State<CountryListView> {
   FileHandlingService fileHandlingService = FileHandlingService();
-
+  bool isAppodealInitialized = false;
   @override
   void initState() {
     super.initState();
-    FacebookAudienceNetwork.init();
-    showBannerAd();
-    // fileHandlingService.readFile();
+    loadAppodealConfigs();
   }
 
-  Widget _currentAd = SizedBox(
-    width: 0,
-    height: 0,
-  );
-
-  void showBannerAd() {
-    setState(
-      () {
-        try {
-          _currentAd = FANService.showNativeBannerAd();
-        } catch (e) {
-          print('error occurred while loading banner ad');
-        }
-      },
-    );
+  void loadAppodealConfigs() {
+    AppodealService.initializeAppodeal();
+    setState(() => this.isAppodealInitialized = true);
   }
+
+  // Widget _currentAd = SizedBox(
+  //   width: 0,
+  //   height: 0,
+  // );
+
+  // void showBannerAd() {
+  //   setState(
+  //     () {
+  //       try {
+  //         _currentAd = FANService.showNativeBannerAd();
+  //       } catch (e) {
+  //         print('error occurred while loading banner ad');
+  //       }
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -155,9 +160,12 @@ class _CountryListViewState extends State<CountryListView> {
         ],
       ),
       bottomNavigationBar: Container(
-        height: 50,
-        child: _currentAd,
+        child: AppodealBanner(),
       ),
+      // bottomNavigationBar: Container(
+      //   height: 50,
+      //   child: _currentAd,
+      // ),
     );
   }
 

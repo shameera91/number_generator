@@ -1,3 +1,4 @@
+import 'package:appodeal_flutter/appodeal_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:my_virtual_number/screens/icon_content.dart';
 import 'package:my_virtual_number/screens/reusable_card.dart';
@@ -11,28 +12,29 @@ class ServicesListView extends StatefulWidget {
 }
 
 class _ServicesListViewState extends State<ServicesListView> {
+  bool shouldPop = true;
   @override
   void initState() {
-    showBannerAd();
+    //showBannerAd();
     super.initState();
   }
 
-  Widget _currentAd = SizedBox(
-    width: 0,
-    height: 0,
-  );
+  // Widget _currentAd = SizedBox(
+  //   width: 0,
+  //   height: 0,
+  // );
 
-  void showBannerAd() {
-    setState(
-      () {
-        try {
-          _currentAd = FANService.showNativeBannerAd();
-        } catch (e) {
-          print('error occurred while loading banner ad');
-        }
-      },
-    );
-  }
+  // void showBannerAd() {
+  //   setState(
+  //     () {
+  //       try {
+  //         _currentAd = FANService.showNativeBannerAd();
+  //       } catch (e) {
+  //         print('error occurred while loading banner ad');
+  //       }
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,127 +42,136 @@ class _ServicesListViewState extends State<ServicesListView> {
       appBar: AppBar(
         title: Text('Services List'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: ReusableCard(
-                    cardChild: IconContent(
-                      iconPath: 'assets/telegram.png',
-                      text: 'Telegram',
+      body: WillPopScope(
+        onWillPop: () async {
+          //Appodeal.show(AdType.INTERSTITIAL);
+          return shouldPop;
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ReusableCard(
+                      cardChild: IconContent(
+                        iconPath: 'assets/telegram.png',
+                        text: 'Telegram',
+                      ),
+                      screen: 'SERVICES_SCREEN',
+                      countryId: widget.countryId,
+                      serviceCode: 'tg',
                     ),
-                    screen: 'SERVICES_SCREEN',
-                    countryId: widget.countryId,
-                    serviceCode: 'tg',
                   ),
-                ),
-                Expanded(
-                  child: ReusableCard(
-                    cardChild: IconContent(
-                      iconPath: 'assets/facebook.png',
-                      text: 'Facebook',
+                  Expanded(
+                    child: ReusableCard(
+                      cardChild: IconContent(
+                        iconPath: 'assets/facebook.png',
+                        text: 'Facebook',
+                      ),
+                      screen: 'SERVICES_SCREEN',
+                      countryId: widget.countryId,
+                      serviceCode: 'fb',
                     ),
-                    screen: 'SERVICES_SCREEN',
-                    countryId: widget.countryId,
-                    serviceCode: 'fb',
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: ReusableCard(
-                    cardChild: IconContent(
-                      iconPath: 'assets/twittr.jpg',
-                      text: 'Twitter',
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ReusableCard(
+                      cardChild: IconContent(
+                        iconPath: 'assets/twittr.jpg',
+                        text: 'Twitter',
+                      ),
+                      screen: 'SERVICES_SCREEN',
+                      countryId: widget.countryId,
+                      serviceCode: 'tw',
                     ),
-                    screen: 'SERVICES_SCREEN',
-                    countryId: widget.countryId,
-                    serviceCode: 'tw',
                   ),
-                ),
-                Expanded(
-                  child: ReusableCard(
-                    cardChild: IconContent(
-                      iconPath: 'assets/instagram.png',
-                      text: 'Instagram',
+                  Expanded(
+                    child: ReusableCard(
+                      cardChild: IconContent(
+                        iconPath: 'assets/instagram.png',
+                        text: 'Instagram',
+                      ),
+                      screen: 'SERVICES_SCREEN',
+                      countryId: widget.countryId,
+                      serviceCode: 'ig',
                     ),
-                    screen: 'SERVICES_SCREEN',
-                    countryId: widget.countryId,
-                    serviceCode: 'ig',
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: ReusableCard(
-                    cardChild: IconContent(
-                      iconPath: 'assets/watsapp.png',
-                      text: 'Whatsapp',
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ReusableCard(
+                      cardChild: IconContent(
+                        iconPath: 'assets/watsapp.png',
+                        text: 'Whatsapp',
+                      ),
+                      screen: 'SERVICES_SCREEN',
+                      countryId: widget.countryId,
+                      serviceCode: 'wa',
                     ),
-                    screen: 'SERVICES_SCREEN',
-                    countryId: widget.countryId,
-                    serviceCode: 'wa',
                   ),
-                ),
-                Expanded(
-                  child: ReusableCard(
-                    cardChild: IconContent(
-                      iconPath: 'assets/viber.png',
-                      text: 'Viber',
+                  Expanded(
+                    child: ReusableCard(
+                      cardChild: IconContent(
+                        iconPath: 'assets/viber.png',
+                        text: 'Viber',
+                      ),
+                      screen: 'SERVICES_SCREEN',
+                      countryId: widget.countryId,
+                      serviceCode: 'vi',
                     ),
-                    screen: 'SERVICES_SCREEN',
-                    countryId: widget.countryId,
-                    serviceCode: 'vi',
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                Expanded(
-                  child: ReusableCard(
-                    cardChild: IconContent(
-                      iconPath: 'assets/discord.png',
-                      text: 'Discord',
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ReusableCard(
+                      cardChild: IconContent(
+                        iconPath: 'assets/discord.png',
+                        text: 'Discord',
+                      ),
+                      screen: 'SERVICES_SCREEN',
+                      countryId: widget.countryId,
+                      serviceCode: 'ds',
                     ),
-                    screen: 'SERVICES_SCREEN',
-                    countryId: widget.countryId,
-                    serviceCode: 'ds',
                   ),
-                ),
-                Expanded(
-                  child: ReusableCard(
-                    cardChild: IconContent(
-                      iconPath: 'assets/gmail.png',
-                      text: 'Gmail',
+                  Expanded(
+                    child: ReusableCard(
+                      cardChild: IconContent(
+                        iconPath: 'assets/gmail.png',
+                        text: 'Gmail',
+                      ),
+                      screen: 'SERVICES_SCREEN',
+                      countryId: widget.countryId,
+                      serviceCode: 'go',
                     ),
-                    screen: 'SERVICES_SCREEN',
-                    countryId: widget.countryId,
-                    serviceCode: 'go',
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
-        height: 50,
-        child: _currentAd,
+        child: AppodealBanner(),
       ),
+      // bottomNavigationBar: Container(
+      //   height: 50,
+      //   child: _currentAd,
+      // ),
     );
   }
 }

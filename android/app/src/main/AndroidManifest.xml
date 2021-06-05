@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.unfold.droid.my_virtual_number">
-    <uses-permission android:name="android.permission.INTERNET"/>
-   <application
+    package="com.unfold.droid.my_virtual_number" xmlns:tools="http://schemas.android.com/tools">
+    <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+   <application tools:replace="label"
         android:label="My Virtual Number"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -39,8 +42,8 @@
             android:name="flutterEmbedding"
             android:value="2" />
             <!-- test app id  ca-app-pub-3940256099942544~3347511713  -->
-            <!-- <meta-data
+            <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3246132399617809~4539804568"/>   -->
+            android:value="ca-app-pub-0000000000000000~0000000000"/>  
     </application>
 </manifest>

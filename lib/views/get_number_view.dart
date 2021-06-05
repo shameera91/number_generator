@@ -1,13 +1,12 @@
-import 'dart:async';
-
+// import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:another_flushbar/flushbar.dart';
-import 'package:facebook_audience_network/facebook_audience_network.dart';
+import 'package:appodeal_flutter/appodeal_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:my_virtual_number/constants.dart';
 import 'package:my_virtual_number/modal/number_response_dto.dart';
 import 'package:my_virtual_number/service/api_services.dart';
-import 'package:my_virtual_number/service/fan_service.dart';
+//import 'package:my_virtual_number/service/fan_service.dart';
 import 'package:my_virtual_number/service/file_handling_service.dart';
 
 const int maxFailedLoadAttempts = 3;
@@ -31,13 +30,12 @@ class _GetNumberViewState extends State<GetNumberView> {
   bool smsReceived = false;
   bool showSpinner = false;
   bool shouldPop = true;
-  bool _isInterstitialAdLoaded = false;
   @override
   void initState() {
     super.initState();
     getNumberButtonPressed = false;
-    loadAd();
-    loadInterstitialAd();
+    // loadAd();
+    // loadInterstitialAd();
   }
 
   Widget _currentAd = SizedBox(
@@ -45,35 +43,35 @@ class _GetNumberViewState extends State<GetNumberView> {
     height: 0,
   );
 
-  void loadAd() {
-    setState(
-      () {
-        try {
-          _currentAd = FANService.showNativeMediumRectngleAd();
-        } catch (e) {
-          print('error occurred while loading banner ad');
-        }
-      },
-    );
-  }
+  // void loadAd() {
+  //   setState(
+  //     () {
+  //       try {
+  //         _currentAd = FANService.showNativeMediumRectngleAd();
+  //       } catch (e) {
+  //         print('error occurred while loading banner ad');
+  //       }
+  //     },
+  //   );
+  // }
 
-  void loadInterstitialAd() {
-    FacebookInterstitialAd.loadInterstitialAd(
-      placementId: Constants.interstitialPlacementId,
-      listener: (result, value) {
-        print(">> FAN > Interstitial Ad: $result --> $value");
-        if (result == InterstitialAdResult.LOADED)
-          FacebookInterstitialAd.showInterstitialAd(delay: 30000);
-        _isInterstitialAdLoaded = true;
+  // void loadInterstitialAd() {
+  //   FacebookInterstitialAd.loadInterstitialAd(
+  //     placementId: Constants.interstitialPlacementId,
+  //     listener: (result, value) {
+  //       print(">> FAN > Interstitial Ad: $result --> $value");
+  //       if (result == InterstitialAdResult.LOADED)
+  //         FacebookInterstitialAd.showInterstitialAd(delay: 30000);
+  //       _isInterstitialAdLoaded = true;
 
-        if (result == InterstitialAdResult.DISMISSED &&
-            value["invalidated"] == true) {
-          _isInterstitialAdLoaded = false;
-          loadInterstitialAd();
-        }
-      },
-    );
-  }
+  //       if (result == InterstitialAdResult.DISMISSED &&
+  //           value["invalidated"] == true) {
+  //         _isInterstitialAdLoaded = false;
+  //         loadInterstitialAd();
+  //       }
+  //     },
+  //   );
+  // }
 
   // _showInterstitialAd() {
   //   if (_isInterstitialAdLoaded == true)
@@ -108,7 +106,7 @@ class _GetNumberViewState extends State<GetNumberView> {
     return WillPopScope(
       onWillPop: () async {
         print('back button pressed');
-        //_showInterstitialAd();
+        Appodeal.show(AdType.INTERSTITIAL);
         return shouldPop;
       },
       child: Scaffold(
@@ -297,18 +295,21 @@ class _GetNumberViewState extends State<GetNumberView> {
                 SizedBox(
                   height: 25.0,
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        child: _currentAd,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: Container(
+                //         child: AppodealBanner(),
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),
+        ),
+        bottomNavigationBar: Container(
+          child: AppodealBanner(),
         ),
       ),
     );
